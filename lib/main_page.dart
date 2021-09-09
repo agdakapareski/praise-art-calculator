@@ -15,6 +15,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
+    // variabel untuk menampung tinggi dan lebar layar
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
@@ -33,6 +34,7 @@ class _MainPageState extends State<MainPage> {
             profitController.text = '';
             hpp = 0;
             hargaJual = 0;
+            berat = 0;
           });
         },
         child: Icon(
