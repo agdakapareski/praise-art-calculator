@@ -38,13 +38,15 @@ hitungBerat(
 }
 
 // fungsi untuk menghitung hpp produk laser cutting
-hitungHPP(
+double hitungHPP(
   int panjang,
   int lebar,
   double tebal,
   String material,
   String kerumitan,
   String finishing,
+  int desain,
+  int jumlah,
 ) {
   // variabel untuk menampung hasil perhitungan harga material per Kg
   double hargaMaterialPerKg = 0;
@@ -79,6 +81,9 @@ hitungHPP(
   // variabel untuk menampung hasil perhitungan hpp
   double hpp = 0;
 
+  // variabel untuk menampung hasil perhitungan hpp sebelum dibulatkan
+  double hppBefore = 0;
+
   // variabel untuk menampung hasil perhitungan nilai kerumitan
   double nilaiKerumitan = 0;
 
@@ -96,6 +101,7 @@ hitungHPP(
   if (material == 'AL') hargaMaterialPerKg = hargaAL;
   if (material == 'none') hargaMaterialPerKg = 0;
 
+  if (kerumitan == '') nilaiKerumitan = 0;
   if (kerumitan == 'low') nilaiKerumitan = 1.3;
   if (kerumitan == 'medium') nilaiKerumitan = 1.6;
   if (kerumitan == 'high') nilaiKerumitan = 1.9;
@@ -123,22 +129,33 @@ hitungHPP(
   }
 
   if (material == "MS" || material == "SUS") {
-    hpp = berat *
+    hppBefore = berat *
         nilaiKerumitan *
         (hargaMaterialPerKg +
             hargaLaserMS +
             hargaFinishing +
             hargaPackaging +
-            hargaLabeling);
+            hargaLabeling +
+            (1000 * desain));
   } else {
-    hpp = berat *
+    hppBefore = berat *
         nilaiKerumitan *
         (hargaMaterialPerKg +
             hargaLaserAL +
             hargaFinishing +
             hargaPackaging +
-            hargaLabeling);
+            hargaLabeling +
+            (1000 * desain));
   }
 
+  hpp = ((hppBefore / 1000) * 0.5).roundToDouble() * 1000 * jumlah;
+
   return hpp;
+}
+
+// fungsi untuk menghitung harga jual
+double hitungHargaJual(double hpp, int profit) {
+  double hargaJual = hpp + (hpp * (profit / 100));
+
+  return hargaJual;
 }
